@@ -22,7 +22,7 @@ def main():
         '--show',
         action='store_true',
         default=False,
-        help='whether to show visualizations.')
+        help='whether to show visualizations.')  # action='store_ture'表示只要运行时该变量有传参就将该变量设为True
     parser.add_argument(
         '--color', default=(0, 255, 0), help='Color of tracked bbox lines.')
     parser.add_argument(
@@ -32,9 +32,9 @@ def main():
     args = parser.parse_args()
 
     # load images
-    if osp.isdir(args.input):
+    if osp.isdir(args.input):  # isdir判断输入是否为目录
         imgs = sorted(
-            filter(lambda x: x.endswith(('.jpg', '.png', '.jpeg')),
+            filter(lambda x: x.endswith(('.jpg', '.png', '.jpeg')),  # TODO 考虑SV248S数据集是tiff格式，这里是否需要更改
                    os.listdir(args.input)),
             key=lambda x: int(x.split('.')[0]))
         IN_VIDEO = False
