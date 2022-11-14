@@ -341,9 +341,14 @@ class PairSampling(object):
             List[dict]: contains the information of sampled data.
         """
         video_info, video_info_another = pair_video_infos
-        if len(video_info['frame_ids']) > 1 and len(
-                video_info_another['frame_ids']) > 1:
-            template_frame_ind = np.random.choice(len(video_info['frame_ids']))
+
+        video_info['val_frame_ids'] = video_info['frame_ids'][video_info['bboxes_isvalid']]
+        video_info_another['val_frame_ids'] = video_info_another['frame_ids'][video_info_another['bboxes_isvalid']]
+
+        if len(video_info['val_frame_ids']) > 1 and len(
+                video_info_another['val_frame_ids']) > 1:
+            # template_frame_ind = np.random.choice(len(video_info['frame_ids']))
+            template_frame_ind = np.random.choice(video_info['val_frame_ids'])
             if self.pos_prob > np.random.random():
                 left_ind = max(template_frame_ind + self.frame_range[0], 0)
                 right_ind = min(template_frame_ind + self.frame_range[1],
@@ -355,12 +360,16 @@ class PairSampling(object):
                 else:
                     ref_frames_inds = list(range(left_ind, right_ind))
                 search_frame_ind = np.random.choice(ref_frames_inds)
+
+                while search_frame_ind not in video_info['val_frame_ids']:
+                    search_frame_ind = np.random.choice(ref_frames_inds)
+
                 results = self.prepare_data(
                     video_info, [template_frame_ind, search_frame_ind],
                     is_positive_pairs=True)
             else:
                 search_frame_ind = np.random.choice(
-                    len(video_info_another['frame_ids']))
+                    video_info_another['val_frame_ids'])
                 results = self.prepare_data(
                     video_info, [template_frame_ind], is_positive_pairs=False)
                 results.extend(
@@ -370,13 +379,18 @@ class PairSampling(object):
         else:
             if self.pos_prob > np.random.random():
                 results = self.prepare_data(
-                    video_info, [0, 0], is_positive_pairs=True)
+                    video_info, [video_info['val_frame_ids'][0], video_info['val_frame_ids'][0]], is_positive_pairs=True)
             else:
-                results = self.prepare_data(
-                    video_info, [0], is_positive_pairs=False)
-                results.extend(
-                    self.prepare_data(
-                        video_info_another, [0], is_positive_pairs=False))
+                try:
+                    results = self.prepare_data(
+                        video_info, [video_info['val_frame_ids'][0]], is_positive_pairs=False)
+                    results.extend(
+                        self.prepare_data(
+                            video_info_another, [video_info_another['val_frame_ids'][0]], is_positive_pairs=False))
+                except IndexError as e:
+                    print(video_info['val_frame_ids'])
+                    print(video_info['video_id'])
+                    print(video_info['filename'])
         return results
 
 
