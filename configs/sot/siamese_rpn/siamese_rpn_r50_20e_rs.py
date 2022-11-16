@@ -43,15 +43,15 @@ train_pipeline = [
 ]
 # dataset settings
 data = dict(
-    samples_per_epoch=10000,
+    samples_per_epoch=60000,
     train=dict(
         type='RandomSampleConcatDataset',
         dataset_sampling_weights=[1],
         dataset_cfgs=[
             # dict(
-            #     type='OTB100Dataset',
-            #     ann_file=data_root + 'otb100/annotations/otb100_infos.txt',
-            #     img_prefix=data_root + 'otb100',
+            #     type='SATSOTDataset',
+            #     ann_file=data_root + 'SatSOT/annotations/SatSOT_infos.txt',
+            #     img_prefix=data_root + 'SatSOT',
             #     pipeline=train_pipeline,
             #     split='train',
             #     test_mode=False),
@@ -64,14 +64,14 @@ data = dict(
                 test_mode=False)
         ]),
     val=dict(
-        type='ICPRDataset',
-        ann_file=data_root + 'ICPR_dataset/annotations/icpr_val_infos.txt',
-        img_prefix=data_root + 'ICPR_dataset',
+        type='SATSOTDataset',
+        ann_file=data_root + 'SatSOT/annotations/SatSOT_infos.txt',
+        img_prefix=data_root + 'SatSOT',
         split='val',
         only_eval_visible=False),
     test=dict(
-        type='ICPRDataset',
-        ann_file=data_root + 'ICPR_dataset/annotations/icpr_val_infos.txt',
-        img_prefix=data_root + 'ICPR_dataset',
-        split='val',
+        type='SATSOTDataset',
+        ann_file=data_root + 'SatSOT/annotations/SatSOT_infos.txt',
+        img_prefix=data_root + 'SatSOT',
+        split='test',
         only_eval_visible=False))

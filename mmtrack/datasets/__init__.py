@@ -25,6 +25,7 @@ from .vot_dataset import VOTDataset
 from .youtube_vis_dataset import YouTubeVISDataset
 
 from .icpr_dataset import ICPRDataset
+from .satsot_dataset import SATSOTDataset
 
 __all__ = [
     'DATASETS', 'PIPELINES', 'build_dataloader', 'build_dataset', 'CocoVID',
@@ -33,5 +34,5 @@ __all__ = [
     'UAV123Dataset', 'TrackingNetDataset', 'OTB100Dataset',
     'YouTubeVISDataset', 'GOT10kDataset', 'VOTDataset', 'BaseSOTDataset',
     'SOTCocoDataset', 'SOTImageNetVIDDataset', 'RandomSampleConcatDataset',
-    'TaoDataset', 'DanceTrackDataset', 'ICPRDataset'
+    'TaoDataset', 'DanceTrackDataset', 'ICPRDataset', 'SATSOTDataset'
 ]

@@ -159,7 +159,7 @@ data = dict(
 # optimizer
 optimizer = dict(
     type='SGD',
-    lr=0.005,
+    lr=0.005/8,
     momentum=0.9,
     weight_decay=0.0001,
     paramwise_cfg=dict(
